@@ -1,16 +1,121 @@
-body { padding: 0; margin: 0 }
-#unity-container { position: absolute }
-#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
-#unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
-#unity-canvas { background: #1F1F20 }
-.unity-mobile #unity-canvas { width: 100%; height: 100% }
-#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: none }
-#unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
-#unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }
-#unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
-#unity-footer { position: relative }
-.unity-mobile #unity-footer { display: none }
-#unity-logo-title-footer { float:left; width: 102px; height: 38px; background: url('unity-logo-title-footer.png') no-repeat center }
-#unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
-#unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
-#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+/* Schmarbles web page: the game fills the whole browser window, on a computer and on a phone. */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #14121f;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* No scrolling, pull-to-refresh, zooming, text selection or long-press menus on a phone. */
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#unity-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: block;
+  background: #14121f;
+  outline: none;
+}
+
+/* Loading */
+#loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: #14121f;
+  z-index: 10;
+}
+#loading img { width: 120px; height: 120px; border-radius: 24px; }
+#loading .bar { width: min(320px, 70vw); height: 12px; border-radius: 6px; background: #2c2840; overflow: hidden; }
+#loading .fill { width: 0; height: 100%; background: #ffc832; border-radius: 6px; transition: width .2s; }
+
+/* Overlays on a phone: "tap to play" (goes full screen) and "turn your phone". */
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+  text-align: center;
+  background: rgba(20, 18, 31, 0.92);
+  z-index: 20;
+}
+.overlay.shown { display: flex; }
+.overlay h1 { margin: 0; font-size: 28px; letter-spacing: 2px; color: #ffc832; }
+.overlay p { margin: 0; font-size: 16px; opacity: .8; }
+
+#rotate { z-index: 30; background: #14121f; }
+#rotate .phone {
+  width: 56px;
+  height: 96px;
+  border: 5px solid #fff;
+  border-radius: 12px;
+  box-sizing: border-box;
+  animation: turn 2s ease-in-out infinite;
+}
+@keyframes turn {
+  0%, 20% { transform: rotate(0deg); }
+  50%, 80% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+#tap-to-play .play {
+  width: 0;
+  height: 0;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  border-left: 48px solid #ffc832;
+  margin-left: 12px;
+}
+
+/* A computer's full-screen button, bottom right. */
+#fullscreen-button {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  width: 36px;
+  height: 36px;
+  display: none;
+  border: 2px solid rgba(255, 255, 255, .5);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, .3);
+  cursor: pointer;
+  z-index: 5;
+}
+#fullscreen-button::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 2px dashed #fff;
+  border-radius: 2px;
+}
+
+#unity-warning {
+  position: fixed;
+  left: 50%;
+  top: 8px;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: none;
+  color: #000;
+}
