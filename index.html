@@ -130,17 +130,19 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Web.loader.js";
+      var loaderUrl = buildUrl + "/9e774f12a0f14563cafe2b6dc5ee526f.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/Web.data.unityweb",
-        frameworkUrl: buildUrl + "/Web.framework.js.unityweb",
-        codeUrl: buildUrl + "/Web.wasm.unityweb",
+        dataUrl: buildUrl + "/8dfb075d81d6192870abb5d2019cb185.data.unityweb",
+        frameworkUrl: buildUrl + "/c6673111b4fc0f9ba24d6b5f928cbffb.framework.js.unityweb",
+        codeUrl: buildUrl + "/b14615610387478c31052f8c32183641.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Schmarbles",
         productVersion: "1.0",
         showBanner: unityShowBanner,
+        // Saved settings are written to the browser's storage by Unity itself (no manual JS_FileSystem_Sync).
+        autoSyncPersistentDataPath: true,
       };
 
       var script = document.createElement("script");
